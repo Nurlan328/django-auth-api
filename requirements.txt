@@ -1,0 +1,8 @@
+Django==6.0.6
+djangorestframework==3.17.1
+djangorestframework-simplejwt==5.5.1
+django-environ
+django-redis
+redis
+celery==5.6.3
+psycopg[binary]
