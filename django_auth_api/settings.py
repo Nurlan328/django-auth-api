@@ -50,11 +50,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # third-party
     'rest_framework',
+    'corsheaders',
     # local apps
     'accounts',
 ]
 
 MIDDLEWARE = [
+    # CorsMiddleware must be as high as possible (before CommonMiddleware).
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -181,3 +184,9 @@ else:
 CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="amqp://guest:guest@localhost:5673//")
 # In tests we don't run a real broker; tasks are mocked or run eagerly.
 CELERY_TASK_ALWAYS_EAGER = env.bool("CELERY_TASK_ALWAYS_EAGER", default=False)
+
+# CORS: allow the React dev server (Vite, port 5173) to call this API.
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]

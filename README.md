@@ -23,6 +23,7 @@ django-auth-api/
 ├── manage.py
 ├── docker-compose.yml          # postgres + redis + rabbitmq
 ├── .env.example                # copy to .env for the full stack
+├── frontend/                   # React + Vite SPA (talks to this API)
 ├── django_auth_api/            # project package
 │   ├── settings.py             # config via django-environ (.env)
 │   ├── urls.py
@@ -75,6 +76,27 @@ Create an admin for `/django-admin/`:
 python manage.py createsuperuser
 ```
 
+## Frontend
+
+A React + Vite single-page app lives in `frontend/` — the same app as in the
+FastAPI twin, only `VITE_API_BASE` differs (registration, login, profile, and an
+admin view with the user list + cached stats).
+
+```bash
+cd frontend
+npm install
+npm run dev        # http://localhost:5173
+```
+
+Run the backend on http://127.0.0.1:8000 first (CORS already allows the dev
+server). To unlock the admin panel, give a user the admin role:
+
+```bash
+python manage.py shell -c "from accounts.models import User; u = User.objects.get(username='alice'); u.role = 'admin'; u.save()"
+```
+
+<!-- Add a screenshot here, e.g.: ![screenshot](docs/screenshot.png) -->
+
 ## Tests
 
 ```bash
@@ -87,7 +109,7 @@ task, so it needs no Docker or external services.
 ## Stack
 
 Python 3.14 · Django · Django REST Framework · SimpleJWT · Celery · RabbitMQ ·
-Redis · PostgreSQL · Docker · django-environ
+Redis · PostgreSQL · Docker · django-environ · React + Vite
 
 ## Notes on the Django approach
 
